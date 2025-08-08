@@ -1,17 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import "../CSS/Dashboard.css";
 import logo from "../assets/logo.jpeg";
 import { FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa";
 
 function Dashboard() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
-    <div className="dashboard-container">
-      <aside className="sidebar">
+    <div className={`dashboard-container ${menuOpen ? "menu-open" : ""}`}>
+      {/* Botón hamburguesa (se muestra en móvil por CSS) */}
+      <button
+        className="hamburger"
+        onClick={() => setMenuOpen((v) => !v)}
+        aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+        aria-expanded={menuOpen}
+      >
+        ☰
+      </button>
+
+      {/* Sidebar tipo drawer en móvil */}
+      <aside className={`sidebar ${menuOpen ? "open" : ""}`} aria-hidden={!menuOpen}>
         <div className="logo-section">
           <img src={logo} alt="Pet Plaza" className="logo-img" />
-          <p className="logo-text">PET PLAZA<br />HOSPIVET</p>
+          <p className="logo-text">
+            PET PLAZA<br />HOSPIVET
+          </p>
         </div>
-        <ul className="menu">
+
+        {/* Cerrar el menú al elegir una opción */}
+        <ul className="menu" onClick={() => setMenuOpen(false)}>
           <li>🏠 Inicio</li>
           <li>🐶 Mascotas</li>
           <li>📅 Citas</li>
@@ -21,7 +38,10 @@ function Dashboard() {
           <li>🔒 Cerrar sesión</li>
         </ul>
       </aside>
-      
+
+      {/* Capa para cerrar tocando fuera del menú */}
+      {menuOpen && <div className="backdrop" onClick={() => setMenuOpen(false)} />}
+
       <main className="main-content">
         <h1 className="title">Bienvenido a Pet Plaza</h1>
 
